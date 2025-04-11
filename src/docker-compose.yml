@@ -10,6 +10,14 @@ services:
       - NODE_ENV=production
       - DB_PASSWORD_FILE=/run/secrets/db_password
       - NEXTAUTH_SECRET_FILE=/run/secrets/nextauth_secret
+      - DB_USERNAME_FILE=/run/secrets/db_username
+      - DB_DATABASE_FILE=/run/secrets/db_database
+      - CLIENT_ID_FILE=/run/secrets/client_id
+      - CLIENT_SECRET_FILE=/run/secrets/client_secret
+      - UPS_CLIENT_ID_FILE=/run/secrets/ups_client_id
+      - UPS_CLIENT_SECRET_FILE=/run/secrets/ups_client_secret
+      - FEDEX_API_KEY_FILE=/run/secrets/fedex_api_key
+      - SHIPPO_API_KEY_FILE=/run/secrets/shippo_api_key
     command: sh -c "pnpm install && pnpm run build && pnpm start"
     ports:
       - "3000:3000"
@@ -17,9 +25,17 @@ services:
     secrets:
       - db_password
       - nextauth_secret
+      - db_username
+      - db_database
+      - client_id
+      - client_secret
+      - ups_client_id
+      - ups_client_secret
+      - fedex_api_key
+      - shippo_api_key
 
   backend:
-    image: node:18 # Assuming you're running your backend with Node.js
+    image: node:18
     working_dir: /var/www/html
     volumes:
       - ./backend:/var/www/html
@@ -35,6 +51,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_password
     restart: always
+    secrets:
+      - db_password
 
   caddy:
     image: caddy:latest
@@ -51,6 +69,22 @@ secrets:
   db_password:
     external: true
   nextauth_secret:
+    external: true
+  db_username:
+    external: true
+  db_database:
+    external: true
+  client_id:
+    external: true
+  client_secret:
+    external: true
+  ups_client_id:
+    external: true
+  ups_client_secret:
+    external: true
+  fedex_api_key:
+    external: true
+  shippo_api_key:
     external: true
 
 volumes:
