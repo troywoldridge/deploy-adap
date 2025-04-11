@@ -1,0 +1,253 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  name         String
+  email        String         @unique
+  password     String
+  wishlist     Wishlist[]
+  reviews   Review[]
+  orders       Order[]
+  achievements   UserAchievement[]
+  reviews      Review[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Gamification Gamification[]
+}
+
+model Product {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  description        String?
+  price              Float
+  productOptions     ProductOption[]
+  productImages      ProductImage[]
+  reviews            Review[]
+  rating             Int
+  comment            String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  OrderItem          OrderItem[]
+  CartItem           CartItem[]
+  Wishlist           Wishlist[]
+  Category           Category?            @relation(fields: [categoryId], references: [id])
+  categoryId         Int?
+  Pricing            Pricing[]
+  prices           Price[]
+  options          Option[]
+  pricingData      ProductPricingData[]
+  ProductPricingData ProductPricingData[]
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Option {
+  id               String    @id @default(uuid())
+  name             String
+  group            String
+  productId        String
+  product          Product   @relation(fields: [productId], references: [id])
+  optionItems      OptionItem[]
+}
+
+model OptionItem {
+  id               String   @id @default(uuid())
+  name             String
+  priceAdjust      Float    // Additional price adjustments for this option item
+  optionId         String
+  option           Option   @relation(fields: [optionId], references: [id])
+}
+
+model ProductOption {
+  id          Int         @id @default(autoincrement())
+  productId   Int
+  optionId    Int
+  price       Float
+  product     Product     @relation(fields: [productId], references: [id])
+  option      Option      @relation(fields: [optionId], references: [id])
+}
+
+model OptionGroup {
+  id          Int         @id @default(autoincrement())
+  name        String
+  productId   Int
+  product     Product     @relation(fields: [productId], references: [id])
+  options     Option[]
+}
+
+model ProductOptionDetail {
+  id              Int           @id @default(autoincrement())
+  productOptionId Int
+  name            String
+  value           String
+  productOption   ProductOption @relation(fields: [productOptionId], references: [id])
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  url       String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id         Int        @id @default(autoincrement())
+  customerId Int
+  items      OrderItem[]
+  totalPrice String
+  status     OrderStatus
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+enum OrderStatus {
+  pending
+  completed
+  cancelled
+}
+
+model Cart {
+  id        String      @id @default(uuid())
+  userId    String      @unique
+  user      User        @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  productId String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId]) // Ensure no duplicate product in cart
+}
+
+
+model Wishlist {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  productId Int
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  productId Int
+  rating    Int
+  comment   String?
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Coupon {
+  id         String   @id @default(uuid())
+  code       String   @unique
+  discount   Float
+  validFrom  DateTime
+  validUntil DateTime
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+
+model Filter {
+  id      Int    @id @default(autoincrement())
+  name    String
+  options String // JSON or Comma Separated Options
+}
+
+model Gamification {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  points Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Price {
+  id               String    @id @default(uuid())
+  productId        String
+  basePrice        Float
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  product          Product   @relation(fields: [productId], references: [id])
+}
+
+model PricingCombination {
+  id          Int    @id @default(autoincrement())
+  optionChain String // Encoded string representing options chain
+  price       Float
+}
+
+model Price {
+  id               String    @id @default(uuid())
+  productId        String
+  basePrice        Float
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  product          Product   @relation(fields: [productId], references: [id])
+}
+
+
+model Achievement {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  points      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UserAchievement {
+  id            String     @id @default(uuid())
+  userId        String
+  achievementId String
+  achievedAt    DateTime   @default(now())
+  user          User       @relation(fields: [userId], references: [id])
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+}
+
+model Leaderboard {
+  id          String   @id @default(uuid())
+  userId      String
+  points      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

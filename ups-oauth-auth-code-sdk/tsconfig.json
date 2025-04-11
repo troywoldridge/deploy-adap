@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": false,
+    
+    "baseUrl": "./",
+    "incremental": true,
+	"outDir": "./dist"
+  },
+  "include": ["src/**/*", "../src/services/AuthCodeService.ts", "../src/services/IAuthCodeService.ts", "../src/services/AuthCodeConstants.ts", "../src/services/TokenInfo.ts", "../src/services/LoginInfo.ts"],
+  "exclude": ["node_modules", "test", "lib", "**/*spec.ts"]
+}

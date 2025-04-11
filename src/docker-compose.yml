@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  frontend:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./frontend-nextjs:/app
+    environment:
+      - NODE_ENV=production
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - NEXTAUTH_SECRET_FILE=/run/secrets/nextauth_secret
+    command: sh -c "pnpm install && pnpm run build && pnpm start"
+    ports:
+      - "3000:3000"
+    restart: always
+    secrets:
+      - db_password
+      - nextauth_secret
+
+  backend:
+    image: node:18 # Assuming you're running your backend with Node.js
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+      - db_password
+
+  db:
+    image: mariadb:10.7
+    volumes:
+      - ./database-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_password
+    restart: always
+
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: always
+
+secrets:
+  db_password:
+    external: true
+  nextauth_secret:
+    external: true
+
+volumes:
+  caddy_data:
+  caddy_config:
