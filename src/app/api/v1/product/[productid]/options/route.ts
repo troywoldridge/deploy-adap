@@ -1,9 +1,11 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET({ params }: { params: { productId: string } }) {
+export async function GET(request: NextRequest) {
+  const { productid } = request.nextUrl.pathname.split('/')[4];  // Accessing productid from URL path
+  
   try {
-    const productId = parseInt(params.productId)
+    const productId = parseInt(productid)
 
     const optionGroups = await prisma.optionGroup.findMany({
       where: { productId },
@@ -12,6 +14,7 @@ export async function GET({ params }: { params: { productId: string } }) {
       },
     })
 
+    // Types
     interface Option {
       id: number
       name: string

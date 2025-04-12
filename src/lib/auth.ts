@@ -1,15 +1,45 @@
-import NextAuth from 'next-auth'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import { prisma } from '@/lib/prisma'
-import GitHubProvider from 'next-auth/providers/github' // or email/password etc.
+// lib/auth.ts
 
-export const authOptions = {
-  adapter: PrismaAdapter(prisma),
+import type { AuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import { prisma } from "@/lib/prisma"
+import bcrypt from "bcrypt"
+
+export const authOptions: AuthOptions = {
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Invalid credentials.")
+        }
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
+
+        if (!user || !user.password) {
+          throw new Error("Invalid credentials.")
+        }
+
+        const isValidPassword = await bcrypt.compare(credentials.password, user.password)
+
+        if (!isValidPassword) {
+          throw new Error("Invalid credentials.")
+        }
+
+        return { id: user.id, name: user.name, email: user.email }
+      },
     }),
   ],
-  session: { strategy: 'jwt' },
+  session: { strategy: "jwt" },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/error",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 }

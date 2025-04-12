@@ -1,22 +1,18 @@
+bash
+CopyEdit
 #!/bin/bash
 
-set -e
+echo "Deploying E-Commerce App"
 
-echo "Pulling latest changes..."
+echo "Pulling latest code..."
 git pull origin main
 
-echo "Installing dependencies with pnpm..."
-cd frontend
-pnpm install --frozen-lockfile
-cd ..
-
-echo "Building Docker images..."
+echo "Building containers..."
+docker-compose down
 docker-compose build
-
-echo "Applying Prisma migrations..."
-docker-compose run --rm app pnpm prisma migrate deploy
-
-echo "Restarting services..."
 docker-compose up -d
 
-echo "Deployment completed!"
+echo "Running Prisma Migrations..."
+docker-compose exec frontend npx prisma migrate deploy
+
+echo "Deployment Complete!"

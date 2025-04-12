@@ -2,50 +2,37 @@ version: "3.8"
 
 services:
   frontend:
-    image: node:18
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adapnow-frontend
     working_dir: /app
     volumes:
-      - ./frontend-nextjs:/app
+      - ../secrets:/run/secrets:ro
     environment:
       - NODE_ENV=production
-      - DB_PASSWORD_FILE=/run/secrets/db_password
-      - NEXTAUTH_SECRET_FILE=/run/secrets/nextauth_secret
-      - DB_USERNAME_FILE=/run/secrets/db_username
-      - DB_DATABASE_FILE=/run/secrets/db_database
-      - CLIENT_ID_FILE=/run/secrets/client_id
-      - CLIENT_SECRET_FILE=/run/secrets/client_secret
-      - UPS_CLIENT_ID_FILE=/run/secrets/ups_client_id
-      - UPS_CLIENT_SECRET_FILE=/run/secrets/ups_client_secret
-      - FEDEX_API_KEY_FILE=/run/secrets/fedex_api_key
-      - SHIPPO_API_KEY_FILE=/run/secrets/shippo_api_key
-    command: sh -c "pnpm install && pnpm run build && pnpm start"
+      - DB_PASSWORD_FILE=/run/secrets/db_password.txt
+      - NEXTAUTH_SECRET_FILE=/run/secrets/nextauth_secret.txt
+      - DB_USERNAME_FILE=/run/secrets/db_username.txt
+      - DB_DATABASE_FILE=/run/secrets/db_database.txt
+      - CLIENT_ID_FILE=/run/secrets/client_id.txt
+      - CLIENT_SECRET_FILE=/run/secrets/client_secret.txt
+      - UPS_CLIENT_ID_FILE=/run/secrets/ups_client_id.txt
+      - UPS_CLIENT_SECRET_FILE=/run/secrets/ups_client_secret.txt
+      - FEDEX_API_KEY_FILE=/run/secrets/fedex_api_key.txt
+      - SHIPPO_API_KEY_FILE=/run/secrets/shippo_api_key.txt
     ports:
       - "3000:3000"
     restart: always
-    secrets:
-      - db_password
-      - nextauth_secret
-      - db_username
-      - db_database
-      - client_id
-      - client_secret
-      - ups_client_id
-      - ups_client_secret
-      - fedex_api_key
-      - shippo_api_key
-
-  backend:
-    image: node:18
-    working_dir: /var/www/html
-    volumes:
-      - ./backend:/var/www/html
-    environment:
-      - DB_PASSWORD_FILE=/run/secrets/db_password
-    secrets:
-      - db_password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   db:
     image: mariadb:10.7
+    container_name: adapnow-db
     volumes:
       - ./database-data:/var/lib/mysql
     environment:
@@ -53,9 +40,15 @@ services:
     restart: always
     secrets:
       - db_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   caddy:
     image: caddy:latest
+    container_name: adapnow-caddy
     ports:
       - "80:80"
       - "443:443"
@@ -64,6 +57,11 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 secrets:
   db_password:

@@ -14,13 +14,13 @@
     "jsx": "preserve",
     "incremental": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@/components/*": ["components/*"],
@@ -29,13 +29,16 @@
     }
   },
   "include": [
-    "src/**/*",
+    ".",                          // ✅ this ensures all files inside src/ (including app/) are included
     "next-env.d.ts",
-    ".next/types/**/*.ts"
-, "src/scripts/processOptions.mjs", "src/services/LoginInfo.ts"  ],
+    ".next/types/**/*.ts",
+    "src/scripts/processOptions.mjs",
+    "src/services/LoginInfo.ts"
+  ],
   "exclude": [
     "node_modules",
     "next.config.ts",
     "tailwind.config.ts"
   ]
 }
+
