@@ -1,7 +1,7 @@
-// src/app/api/v1/coupon/route.ts
+// src/app/api/v1/coupon/index/route.ts
 
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import { prisma } from '@/lib/prisma'
 
 // GET handler: Fetch all active coupons
 export async function GET() {

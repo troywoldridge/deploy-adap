@@ -1,8 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server'
+// app/api/v1/product/[productid]/route.ts
+import { NextRequest } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
-export async function GET(req: NextRequest) {
-  const url = req.nextUrl
-  const productId = url.pathname.split('/').at(-1)
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { productid: string } }
+) {
+  const { productid } = params;
 
-  return NextResponse.json({ message: `Product ID is ${productId}` })
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: Number(productid) },
+    });
+
+    if (!product) {
+      return new Response(JSON.stringify({ error: 'Product not found' }), {
+        status: 404,
+      });
+    }
+
+    return new Response(JSON.stringify(product), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: 'Failed to fetch product' }), {
+      status: 500,
+    });
+  }
 }

@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { productid: string } }
+) {
   try {
-    // Extract productId from URL
-    const segments = request.nextUrl.pathname.split('/');
-    const productId = parseInt(segments[segments.indexOf('product') + 1], 10);
+    const productId = parseInt(params.productid, 10);
 
     if (isNaN(productId)) {
       return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 });
     }
 
-    // Fetch option groups and their options from the database
     const optionGroups = await prisma.optionGroup.findMany({
       where: { productId },
       include: {
@@ -24,8 +24,8 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Format the response structure
     const formattedOptionGroups = optionGroups.map(group => ({
+      id: group.id, // optional but useful
       group: group.name,
       options: group.options.map(opt => ({
         id: opt.id,
@@ -42,3 +42,4 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+

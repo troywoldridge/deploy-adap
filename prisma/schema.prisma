@@ -65,6 +65,7 @@ model Option {
   id             String          @id @default(uuid())
   name           String
   group          String
+  value     String
   productId      Int
   product        Product         @relation("ProductToOption", fields: [productId], references: [id])
   optionItems    OptionItem[]
@@ -112,6 +113,7 @@ model Image {
   productId Int
   url       String
   product   Product @relation(fields: [productId], references: [id])
+  productId Int
 }
 
 model OrderItem {
@@ -186,6 +188,7 @@ model Coupon {
 model Category {
   id       Int       @id @default(autoincrement())
   name     String
+  slug      String   @unique
   products Product[]
 }
 
