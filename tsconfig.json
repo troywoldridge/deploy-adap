@@ -1,0 +1,59 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "outDir": "./dist",
+    "rootDir": ".", // Points to the src/ directory
+    "baseUrl": ".", // This is now the src/ directory
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/types/*": [
+        "types/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*",
+    "../.next/types/**/*.ts",
+    "../next-env.d.ts",
+    "scripts/processOptions.mjs",
+    "services/LoginInfo.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "../node_modules",
+    "../next.config.ts",
+    "../tailwind.config.ts"
+  ]
+}

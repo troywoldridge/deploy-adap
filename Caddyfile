@@ -1,0 +1,63 @@
+adapnow.com {
+  tls {
+    protocols tls1.2 tls1.3
+  }
+
+  # Reverse proxy Next.js app
+  reverse_proxy /_next/* adapnow-frontend:3000
+  reverse_proxy /api/* adapnow-frontend:3000
+  reverse_proxy /uploads/* adapnow-frontend:3000
+  reverse_proxy /* adapnow-frontend:3000
+
+  # Serve uploaded files from local volume
+  handle_path /uploads/* {
+    root * /app/public
+    file_server
+  }
+
+  # Health check endpoint
+  handle /healthz {
+    respond "OK" 200
+  }
+
+  # Protect admin area with HTTP Basic Auth
+  handle_path /admin* {
+    basicauth {
+      adminUser $2a$14$gtqQROUYreaCn28YthHWtOV/igLdEncUyru5pW4U/ZG455fj0dpCu
+    }
+    reverse_proxy adapnow-frontend:3000
+  }
+
+  # Rate limiting (per IP)
+  rate_limit {
+    zone default {
+      key {remote.ip}
+      window 1m
+      burst 20
+      rate 10
+    }
+  }
+
+  # Security headers
+  header {
+    X-Frame-Options "DENY"
+    X-Content-Type-Options "nosniff"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Content-Security-Policy "default-src 'self' 'unsafe-inline' https: data: blob:;"
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Cache-Control "no-store"
+  }
+
+  # Logs
+  log {
+    output stdout
+    format console
+  }
+
+  redir https://adapnow.com{uri} permanent
+}
+
+www.adapnow.com {
+  redir https://adapnow.com{uri} permanent
+}

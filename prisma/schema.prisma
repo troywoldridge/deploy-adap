@@ -1,0 +1,254 @@
+// Fixed Prisma schema - all relations, types, and UUID usage corrected
+// Updated to ensure consistent UUID usage and correct relation field types
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+
+model User {
+  id           String            @id @default(cuid())
+  name         String
+  email        String            @unique
+  password     String
+  wishlist     Wishlist[]
+  reviews      Review[]
+  orders       Order[]           @relation("UserOrders")
+  achievements UserAchievement[]
+  Gamification Gamification[]
+  cart         Cart?             @relation("UserCart")
+  leaderboards Leaderboard[]     @relation("UserToLeaderboard")
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  customerId String
+  customer   User        @relation("UserOrders", fields: [customerId], references: [id])
+  items      OrderItem[]
+  totalPrice String
+  status     OrderStatus
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Product {
+  id             Int             @id @default(autoincrement())
+  name           String
+  description    String?
+  price          Float
+  productOptions ProductOption[] @relation("ProductToProductOption")
+  images         Image[]
+  reviews        Review[]
+  rating         Int?
+  comment        String?
+  OrderItem      OrderItem[]
+  cartItems      CartItem[]      @relation("ProductToCartItem")
+  Wishlist       Wishlist[]
+  Category       Category?       @relation(fields: [categoryId], references: [id])
+  categoryId     Int?
+  options        Option[]        @relation("ProductToOption")
+  prices         Price[]         @relation("ProductToPrice")
+  optionGroups   OptionGroup[]   @relation("ProductToOptionGroup")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Option {
+  id             String          @id @default(uuid())
+  name           String
+  group          String
+  productId      Int
+  product        Product         @relation("ProductToOption", fields: [productId], references: [id])
+  optionItems    OptionItem[]
+  productOptions ProductOption[] @relation("OptionToProductOption")
+  optionGroupId  Int?
+  optionGroup    OptionGroup?    @relation("OptionGroupToOption", fields: [optionGroupId], references: [id])
+}
+
+model OptionItem {
+  id          String @id @default(uuid())
+  name        String
+  priceAdjust Float
+  optionId    String
+  option      Option @relation(fields: [optionId], references: [id])
+}
+
+model ProductOption {
+  id        Int                   @id @default(autoincrement())
+  productId Int
+  optionId  String
+  price     Float
+  product   Product               @relation("ProductToProductOption", fields: [productId], references: [id])
+  option    Option                @relation("OptionToProductOption", fields: [optionId], references: [id])
+  details   ProductOptionDetail[] @relation("ProductOptionToDetail")
+}
+
+model OptionGroup {
+  id        Int      @id @default(autoincrement())
+  name      String
+  productId Int
+  product   Product  @relation("ProductToOptionGroup", fields: [productId], references: [id])
+  options   Option[] @relation("OptionGroupToOption")
+}
+
+model ProductOptionDetail {
+  id              Int           @id @default(autoincrement())
+  productOptionId Int
+  name            String
+  value           String
+  productOption   ProductOption @relation("ProductOptionToDetail", fields: [productOptionId], references: [id])
+}
+
+model Image {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  url       String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+enum OrderStatus {
+  pending
+  completed
+  cancelled
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  user      User       @relation("UserCart", fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  productId Int
+  product   Product  @relation("ProductToCartItem", fields: [productId], references: [id])
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+}
+
+model Wishlist {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  productId Int
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  productId Int
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Coupon {
+  id         String   @id @default(uuid())
+  code       String   @unique
+  discount   Float
+  validFrom  DateTime
+  validUntil DateTime
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+
+model Filter {
+  id      Int    @id @default(autoincrement())
+  name    String
+  options String
+}
+
+model Gamification {
+  id     Int    @id @default(autoincrement())
+  userId String
+  points Int
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Price {
+  id        String   @id @default(uuid())
+  productId Int
+  basePrice Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation("ProductToPrice", fields: [productId], references: [id])
+}
+
+model PricingCombination {
+  id          Int    @id @default(autoincrement())
+  optionChain String
+  price       Float
+}
+
+model Achievement {
+  id               String            @id @default(uuid())
+  title            String
+  description      String
+  points           Int
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  userAchievements UserAchievement[] @relation("AchievementToUserAchievement")
+}
+
+model UserAchievement {
+  id            String      @id @default(uuid())
+  userId        String
+  achievementId String
+  achievedAt    DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id])
+  achievement   Achievement @relation("AchievementToUserAchievement", fields: [achievementId], references: [id])
+}
+
+model Leaderboard {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  points    Int
+  user      User     @relation("UserToLeaderboard", fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductPricingData {
+  id           Int    @id @default(autoincrement())
+  productId    Int
+  optionsHash  String
+  price        Float
+  // Add other necessary fields here
+}
