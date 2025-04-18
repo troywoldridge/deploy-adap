@@ -1,6 +1,6 @@
 // src/app/api/v1/category/[id]/DELETE.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { deleteCategory } from '@/app/api/v1/services/deleteCategory'
+import { deleteCategory } from 'app/api/v1/services/deleteCategory' // ✅ works with baseUrl = "src"
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params

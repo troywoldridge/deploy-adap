@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type { RouteHandlerContext } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = context.params
+export async function GET(
+  _req: NextRequest,
+  context: { params: { productid: string } } // <- MUST match `[productid]` exactly
+) {
+  const { productid } = context.params
 
   try {
-    return NextResponse.json({ message: `GET category ${id}` })
+    return NextResponse.json({ message: `Product ID is ${productid}` })
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
@@ -19,7 +21,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
  *   post:
  *     description: POST handler
  */
-export async function POST() {
+export async function POST(req: NextRequest) {  // Added req parameter
   try {
     // const schema = z.object({
     //   name: z.string(),
@@ -40,13 +42,13 @@ export async function POST() {
  *   put:
  *     description: PUT handler
  */
-export async function PUT() {
+export async function PUT(req: NextRequest) {  // Added req parameter
   try {
+    // const body = await req.json();
     // const schema = z.object({
     //   name: z.string(),
     //   price: z.number(),
     // });
-    // const body = await req.json();
     // const validated = schema.parse(body);
     return NextResponse.json({ message: 'PUT OK' })
   } catch (err) {
@@ -61,8 +63,9 @@ export async function PUT() {
  *   delete:
  *     description: DELETE handler
  */
-export async function DELETE() {
+export async function DELETE(req: NextRequest) {  // Added req parameter
   try {
+    // Implement delete logic here
     return NextResponse.json({ message: 'DELETE OK' })
   } catch (err) {
     console.error(err)

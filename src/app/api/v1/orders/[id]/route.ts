@@ -1,12 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type { RouteHandlerContext } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = context.params
-
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    return NextResponse.json({ message: `GET category ${id}` })
+    const id = Number(context.params.id)
+
+    const category = await prisma.category.findUnique({
+      where: { id },
+    })
+
+    if (!category) {
+      return NextResponse.json({ error: 'Category not found' }, { status: 404 })
+    }
+
+    return NextResponse.json(category)
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

@@ -1,6 +1,7 @@
 // src/app/api/v1/coupon/apply/[code]/DELETE.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { deleteCoupon } from '@/app/api/v1/coupon/services/deleteCoupon'
+import { deleteCoupon } from '@/app/api/v1/services/deleteCoupon'
+import { Coupon } from '@prisma/client'
 
 export async function DELETE(req: NextRequest, { params }: { params: { code: string } }) {
   const { code } = params

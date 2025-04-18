@@ -1,6 +1,6 @@
 // src/app/api/v1/coupon/apply/[code]/PUT.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { updateCoupon } from '@/app/api/v1/coupon/services/updateCoupon'
+import { updateCoupon } from '@/app/api/v1/services/updateCoupon'
 
 export async function PUT(req: NextRequest, { params }: { params: { code: string } }) {
   const { code } = params

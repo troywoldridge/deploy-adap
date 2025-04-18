@@ -22,7 +22,7 @@
       "@/lib/*": ["lib/*"],
       "@/types/*": ["types/*"],
       "@/hooks/*": ["hooks/*"],
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     }
   },
   "include": ["src/**/*", ".next/types/**/*.ts", "next-env.d.ts"],

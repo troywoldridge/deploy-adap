@@ -3,9 +3,44 @@ import { prisma } from '@/lib/prisma'
 import { CreateReviewPayload } from '@/types/review'
 import type { Review } from '@/types/review'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+/**
+ * @swagger
+ * /api/endpoint:
+ *   get:
+ *     summary: Get product reviews
+ *     parameters:
+ *       - in: query
+ *         name: productId
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter reviews by product ID
+ *     responses:
+ *       200:
+ *         description: List of reviews
+ */
+export async function GET(req: NextRequest) {
   try {
-    return NextResponse.json({ message: 'GET all cart items' })
+    const { searchParams } = new URL(req.url)
+    const productId = searchParams.get('productId')
+
+    const reviews = await prisma.review.findMany({
+      where: productId
+        ? {
+            productId: parseInt(productId, 10),
+          }
+        : undefined,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    })
+
+    return NextResponse.json(reviews)
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
@@ -16,17 +51,29 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
  * @swagger
  * /api/endpoint:
  *   post:
- *     description: POST handler
+ *     summary: Create a review
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateReviewPayload'
+ *     responses:
+ *       201:
+ *         description: Review created
  */
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
-    // const schema = z.object({
-    //   name: z.string(),
-    //   price: z.number(),
-    // });
-    // const body = await req.json();
-    // const validated = schema.parse(body);
-    return NextResponse.json({ message: 'POST OK' })
+    const body = (await req.json()) as CreateReviewPayload
+
+    const newReview = await prisma.review.create({
+      data: {
+        ...body,
+        userId: body.userId ?? '', // Ensure userId is a string or provide a default value
+      },
+    })
+
+    return NextResponse.json(newReview, { status: 201 })
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
@@ -37,16 +84,14 @@ export async function POST() {
  * @swagger
  * /api/endpoint:
  *   put:
- *     description: PUT handler
+ *     summary: Update data (example)
+ *     responses:
+ *       200:
+ *         description: PUT operation successful
  */
 export async function PUT() {
   try {
-    // const schema = z.object({
-    //   name: z.string(),
-    //   price: z.number(),
-    // });
-    // const body = await req.json();
-    // const validated = schema.parse(body);
+    // Placeholder: add validation and DB logic
     return NextResponse.json({ message: 'PUT OK' })
   } catch (err) {
     console.error(err)
@@ -58,10 +103,14 @@ export async function PUT() {
  * @swagger
  * /api/endpoint:
  *   delete:
- *     description: DELETE handler
+ *     summary: Delete data (example)
+ *     responses:
+ *       200:
+ *         description: DELETE operation successful
  */
 export async function DELETE() {
   try {
+    // Placeholder: add logic to delete something
     return NextResponse.json({ message: 'DELETE OK' })
   } catch (err) {
     console.error(err)

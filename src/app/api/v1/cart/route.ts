@@ -1,68 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { cartGETHandler, cartPOSTHandler, cartPUTHandler, cartDELETEHandler } from './handlers/cartHandlers'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  try {
-    return NextResponse.json({ message: 'GET all cart items' })
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-  }
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url) // Get the query params
+  const id = searchParams.get('id') // Assuming you're using a query param 'id'
+  
+  // If you want to handle dynamic routes like [id], you can use URL's path segments
+  const pathSegments = req.url.split('/')
+  const dynamicId = pathSegments[pathSegments.length - 1] // Get the dynamic `id` from URL
+
+  // Pass the `id` to the handler function
+  return cartGETHandler(req, { id: dynamicId })
 }
 
-/**
- * @swagger
- * /api/endpoint:
- *   post:
- *     description: POST handler
- */
 export async function POST(req: NextRequest) {
-  try {
-    // const schema = z.object({
-    //   name: z.string(),
-    //   price: z.number(),
-    // });
-    // const body = await req.json();
-    // const validated = schema.parse(body);
-    return NextResponse.json({ message: 'POST OK' })
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-  }
+  return cartPOSTHandler(req)
 }
 
-/**
- * @swagger
- * /api/endpoint:
- *   put:
- *     description: PUT handler
- */
 export async function PUT(req: NextRequest) {
-  try {
-    // const schema = z.object({
-    //   name: z.string(),
-    //   price: z.number(),
-    // });
-    // const body = await req.json();
-    // const validated = schema.parse(body);
-    return NextResponse.json({ message: 'PUT OK' })
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-  }
+  return cartPUTHandler(req)
 }
 
-/**
- * @swagger
- * /api/endpoint:
- *   delete:
- *     description: DELETE handler
- */
 export async function DELETE(req: NextRequest) {
-  try {
-    return NextResponse.json({ message: 'DELETE OK' })
-  } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-  }
+  return cartDELETEHandler(req)
 }
+

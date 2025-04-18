@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type { RouteHandlerContext } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = context.params
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { productid: string } }
+) {
+  const { productid } = params
 
   try {
-    return NextResponse.json({ message: `GET category ${id}` })
+    return NextResponse.json({ message: `GET product ${productid}` })
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
+
 
 /**
  * @swagger
@@ -21,12 +24,6 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
  */
 export async function POST() {
   try {
-    // const schema = z.object({
-    //   name: z.string(),
-    //   price: z.number(),
-    // });
-    // const body = await req.json();
-    // const validated = schema.parse(body);
     return NextResponse.json({ message: 'POST OK' })
   } catch (err) {
     console.error(err)
@@ -42,12 +39,6 @@ export async function POST() {
  */
 export async function PUT() {
   try {
-    // const schema = z.object({
-    //   name: z.string(),
-    //   price: z.number(),
-    // });
-    // const body = await req.json();
-    // const validated = schema.parse(body);
     return NextResponse.json({ message: 'PUT OK' })
   } catch (err) {
     console.error(err)

@@ -1,35 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Prisma } from '@prisma/client'
 
-/**
- * @swagger
- * /api/products:
- *   get:
- *     description: Get a list of all products
- *     responses:
- *       200:
- *         description: A list of products
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   name:
- *                     type: string
- *                   description:
- *                     type: string
- *                   price:
- *                     type: number
- *                   createdAt:
- *                     type: string
- *                   updatedAt:
- *                     type: string
- */
 interface Product {
   id: number
   name: string
@@ -46,7 +17,7 @@ interface PaginatedProductsResponse {
   totalPages: number
 }
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
 
@@ -64,29 +35,29 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
     const skip = (page - 1) * limit
 
-    const where: Prisma.ProductWhereInput = search
-      ? {
-          OR: [
-            { name: { contains: search, mode: 'insensitive' } },
-            { description: { contains: search, mode: 'insensitive' } },
-          ],
-        }
-      : {}
+    // Using raw query for case-insensitive search
+    const products = await prisma.$queryRaw<Product[]>`
+      SELECT * FROM Product
+      WHERE LOWER(name) LIKE LOWER(${`%${search}%`}) 
+      OR LOWER(description) LIKE LOWER(${`%${search}%`})
+      LIMIT ${limit} OFFSET ${skip}
+    `
 
-    const [products, total] = await Promise.all([
-      prisma.product.findMany({ where, skip, take: limit }),
-      prisma.product.count({ where }),
-    ])
+    const total = await prisma.$queryRaw<{ count: number }[]>`
+      SELECT COUNT(*) as count FROM Product
+      WHERE LOWER(name) LIKE LOWER(${`%${search}%`}) 
+      OR LOWER(description) LIKE LOWER(${`%${search}%`})
+    `
 
     const response: PaginatedProductsResponse = {
       products: products.map((product) => ({
         ...product,
-        createdAt: product.createdAt.toISOString(),
-        updatedAt: product.updatedAt.toISOString(),
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
       })),
-      total,
+      total: total[0].count,
       page,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil(total[0].count / limit),
     }
 
     return NextResponse.json(response)

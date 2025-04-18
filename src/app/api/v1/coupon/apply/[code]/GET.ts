@@ -1,7 +1,6 @@
 // src/app/api/v1/coupon/apply/[code]/GET.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { getCouponByCode } from '@/app/api/v1/coupon/services/getCoupon'
-
+import { getCouponByCode } from '@/app/api/v1/services/getCoupon'
 export async function GET(_req: NextRequest, { params }: { params: { code: string } }) {
   const { code } = params
 
