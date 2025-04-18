@@ -27,7 +27,11 @@ export const useUpdatePrice = () => {
   const queryClient = useQueryClient()
 
   return useMutation<UpdatePriceResponse, unknown, UpdatePriceData>({
-    mutationFn: (data: UpdatePriceData) => api.getProductPrice(data.productId, data.optionIds.map(id => id.toString())),
+    mutationFn: (data: UpdatePriceData) =>
+      api.getProductPrice(
+        data.productId,
+        data.optionIds.map((id) => id.toString())
+      ),
     onSuccess: (data) => {
       console.log('Updated price:', data.price) // This will now work with string
     },

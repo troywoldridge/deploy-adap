@@ -26,7 +26,10 @@ export async function claimAchievement(id: string): Promise<UserAchievement> {
 }
 
 // Add a user achievement
-export async function addUserAchievement(userId: string, achievementId: string): Promise<UserAchievement> {
+export async function addUserAchievement(
+  userId: string,
+  achievementId: string
+): Promise<UserAchievement> {
   const res = await apiClient.post<UserAchievement>('/api/v1/gamification/user-achievements', {
     userId,
     achievementId,

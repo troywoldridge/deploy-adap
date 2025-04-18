@@ -16,7 +16,9 @@ export async function getCouponByCode(code: string): Promise<Coupon | null> {
   return res.json()
 }
 
-export async function createCoupon(data: Omit<Coupon, 'id' | 'createdAt' | 'updatedAt'>): Promise<Coupon> {
+export async function createCoupon(
+  data: Omit<Coupon, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<Coupon> {
   const res = await fetch(API_BASE, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -41,7 +43,9 @@ export async function updateCoupon(id: number, data: Partial<Coupon>): Promise<C
   return res.json()
 }
 
-export async function applyCoupon(code: string): Promise<{ success: boolean; discount?: number; message?: string }> {
+export async function applyCoupon(
+  code: string
+): Promise<{ success: boolean; discount?: number; message?: string }> {
   const res = await fetch(`${API_BASE}/apply`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -50,4 +54,3 @@ export async function applyCoupon(code: string): Promise<{ success: boolean; dis
   if (!res.ok) throw new Error('Failed to apply coupon')
   return res.json()
 }
-

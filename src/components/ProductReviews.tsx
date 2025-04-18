@@ -19,7 +19,6 @@ const ProductReviews: React.FC<Props> = ({ productId }) => {
   const handleCreateReview = () => {
     createReview(newReview)
     setNewReview({ productId: Number(productId), rating: 1, comment: '' })
-
   }
 
   const handleDeleteReview = (reviewId: number) => {

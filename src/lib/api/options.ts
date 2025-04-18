@@ -35,10 +35,15 @@ export const getProductOptions = async (productId: string | number): Promise<Opt
 }
 
 // Function to fetch product price based on product ID and selected options
-export const getProductPrice = async (productId: string | number, optionIds: string[]): Promise<{ price: string }> => {
+export const getProductPrice = async (
+  productId: string | number,
+  optionIds: string[]
+): Promise<{ price: string }> => {
   try {
     // Assuming the price API endpoint takes the productId and optionIds as query params or in the body
-    const response = await apiClient.get<{ price: string }>(`/products/${productId}/price`, { params: { optionIds } })
+    const response = await apiClient.get<{ price: string }>(`/products/${productId}/price`, {
+      params: { optionIds },
+    })
     return { price: response.data.price }
   } catch (error) {
     console.error('Error fetching product price:', error)

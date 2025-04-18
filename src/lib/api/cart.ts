@@ -19,8 +19,8 @@ export async function getCart() {
 export async function addToCart(productId: number, quantity: number, price: number) {
   try {
     // Check if the product is already in the cart
-    const existingProductIndex = cart.findIndex(item => item.productId === productId)
-    
+    const existingProductIndex = cart.findIndex((item) => item.productId === productId)
+
     if (existingProductIndex >= 0) {
       // If product already exists, update the quantity
       cart[existingProductIndex].quantity += quantity
@@ -48,12 +48,10 @@ export async function updateCartItem(itemId: string, data: { quantity: number })
   return res.json()
 }
 
-
-
 // Remove item from cart
 export async function removeFromCart(productId: number) {
   try {
-    cart = cart.filter(item => item.productId !== productId)
+    cart = cart.filter((item) => item.productId !== productId)
 
     return NextResponse.json({ message: 'Item removed from cart', cart })
   } catch (err) {
@@ -72,7 +70,14 @@ export async function clearCart() {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
-export function removeCartItem(itemId: string): Promise<unknown> {
-  throw new Error('Function not implemented.');
-}
+export async function removeCartItem(itemId: string): Promise<unknown> {
+  try {
+    // Assuming itemId corresponds to productId in the cart
+    cart = cart.filter((item) => item.productId.toString() !== itemId)
 
+    return NextResponse.json({ message: 'Item removed from cart', cart })
+  } catch (err) {
+    console.error('Error removing item from cart:', err)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+  }
+}

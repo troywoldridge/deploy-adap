@@ -10,8 +10,15 @@ export const useCart = () => {
   })
 
   const addMutation = useMutation({
-    mutationFn: ({ productId, quantity, price }: { productId: number; quantity: number; price: number }) =>
-      api.addToCart(productId, quantity, price),
+    mutationFn: ({
+      productId,
+      quantity,
+      price,
+    }: {
+      productId: number
+      quantity: number
+      price: number
+    }) => api.addToCart(productId, quantity, price),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart'] }),
   })
 

@@ -14,7 +14,7 @@
     "jsx": "preserve",
     "incremental": true,
     "outDir": "./dist",
-    "baseUrl": "src",  // This should work assuming the source code is in the src folder
+    "baseUrl": "src", // This should work assuming the source code is in the src folder
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/components/*": ["components/*"],
@@ -25,15 +25,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    ".next/types/**/*.ts",
-    "next-env.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "next.config.ts",
-    "tailwind.config.ts"
-  ]
+  "include": ["src/**/*", ".next/types/**/*.ts", "next-env.d.ts"],
+  "exclude": ["node_modules", "dist", "next.config.ts", "tailwind.config.ts"]
 }

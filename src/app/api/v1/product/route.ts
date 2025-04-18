@@ -71,10 +71,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     // Build the where condition for search
     const where: Prisma.ProductWhereInput = search
       ? {
-          OR: [
-            { name: { contains: search } },
-            { description: { contains: search } },
-          ],
+          OR: [{ name: { contains: search } }, { description: { contains: search } }],
         }
       : {}
 
@@ -88,7 +85,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     const totalProducts = await prisma.product.count({ where })
 
     const response: PaginatedProductsResponse = {
-      products: products.map(product => ({
+      products: products.map((product) => ({
         ...product,
         createdAt: product.createdAt.toISOString(),
         updatedAt: product.updatedAt.toISOString(),
@@ -104,7 +101,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
     return new Response(
       JSON.stringify({
-        message: process.env.NODE_ENV === 'production' ? 'Internal Server Error' : (error as Error).message,
+        message:
+          process.env.NODE_ENV === 'production'
+            ? 'Internal Server Error'
+            : (error as Error).message,
       }),
       { status: 500 }
     )

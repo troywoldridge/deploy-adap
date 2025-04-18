@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 
 // Helper function
 
-
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     return NextResponse.json({ message: 'GET OK' })

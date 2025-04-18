@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 import { CreateReviewPayload } from '@/types/review'
 import type { Review } from '@/types/review'
 
-
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     return NextResponse.json({ message: 'GET OK' })

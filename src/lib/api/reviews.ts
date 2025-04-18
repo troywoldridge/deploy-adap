@@ -58,11 +58,11 @@ export const getProductReviews = async (productId: number): Promise<Review[]> =>
   try {
     const response = await apiClient.get(`/products/${productId}/reviews`)
     return response.data as Review[]
-    } catch (error) {
-      console.error('Error fetching product reviews:', error)
-      throw new Error('Failed to fetch product reviews')
-    }
+  } catch (error) {
+    console.error('Error fetching product reviews:', error)
+    throw new Error('Failed to fetch product reviews')
   }
+}
 
 // Function to update a review's status or content (example)
 export async function updateReview(reviewId: number, data: Partial<CreateReviewPayload>) {
