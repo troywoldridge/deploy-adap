@@ -253,26 +253,24 @@
                 o.length > 1 &&
                   (0, r.jsx)('div', {
                     className: 'flex gap-2 overflow-x-auto mt-4',
-                    children: o
-                      .slice(1)
-                      .map((e) =>
-                        (0, r.jsx)(
-                          'div',
-                          {
-                            onClick: () => c(e.image_url),
-                            className:
-                              'cursor-pointer transition-transform transform hover:scale-105',
-                            children: (0, r.jsx)(s.default, {
-                              src: e.image_url,
-                              alt: e.alt_text || 'Product Thumbnail',
-                              width: 100,
-                              height: 75,
-                              className: 'rounded shadow object-cover',
-                            }),
-                          },
-                          e.id
-                        )
-                      ),
+                    children: o.slice(1).map((e) =>
+                      (0, r.jsx)(
+                        'div',
+                        {
+                          onClick: () => c(e.image_url),
+                          className:
+                            'cursor-pointer transition-transform transform hover:scale-105',
+                          children: (0, r.jsx)(s.default, {
+                            src: e.image_url,
+                            alt: e.alt_text || 'Product Thumbnail',
+                            width: 100,
+                            height: 75,
+                            className: 'rounded shadow object-cover',
+                          }),
+                        },
+                        e.id
+                      )
+                    ),
                   }),
               ],
             })
