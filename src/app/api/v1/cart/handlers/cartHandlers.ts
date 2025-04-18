@@ -13,7 +13,7 @@ export async function cartGETHandler(req: NextRequest, params: { id: string }) {
       }
       return NextResponse.json(cartItem)
     }
-    
+
     const cartItems = await prisma.cartItem.findMany()
     return NextResponse.json(cartItems)
   } catch (err) {
@@ -63,7 +63,7 @@ export async function cartDELETEHandler(req: NextRequest) {
     if (!id) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 })
     }
-    
+
     const deletedItem = await prisma.cartItem.delete({
       where: { id },
     })

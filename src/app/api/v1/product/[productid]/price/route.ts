@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     // Replace with actual logic if you want to fetch cart items
     return NextResponse.json({ message: 'GET all cart items' })

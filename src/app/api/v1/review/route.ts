@@ -19,7 +19,7 @@ import type { Review } from '@/types/review'
  *       200:
  *         description: List of reviews
  */
-export async function GET(req: NextRequest) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     const { searchParams } = new URL(req.url)
     const productId = searchParams.get('productId')

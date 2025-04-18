@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(
-  _req: NextRequest,
-  context: { params: { productid: string } } // <- MUST match `[productid]` exactly
-) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   const { productid } = context.params
 
   try {
@@ -21,7 +18,8 @@ export async function GET(
  *   post:
  *     description: POST handler
  */
-export async function POST(req: NextRequest) {  // Added req parameter
+export async function POST(req: NextRequest) {
+  // Added req parameter
   try {
     // const schema = z.object({
     //   name: z.string(),
@@ -42,7 +40,8 @@ export async function POST(req: NextRequest) {  // Added req parameter
  *   put:
  *     description: PUT handler
  */
-export async function PUT(req: NextRequest) {  // Added req parameter
+export async function PUT(req: NextRequest) {
+  // Added req parameter
   try {
     // const body = await req.json();
     // const schema = z.object({
@@ -63,7 +62,8 @@ export async function PUT(req: NextRequest) {  // Added req parameter
  *   delete:
  *     description: DELETE handler
  */
-export async function DELETE(req: NextRequest) {  // Added req parameter
+export async function DELETE(req: NextRequest) {
+  // Added req parameter
   try {
     // Implement delete logic here
     return NextResponse.json({ message: 'DELETE OK' })

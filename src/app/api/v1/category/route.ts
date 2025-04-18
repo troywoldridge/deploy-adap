@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     return NextResponse.json({ message: 'GET all cart items' })
   } catch (err) {
@@ -8,7 +8,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
-export async function POST(): Promise<NextResponse<{ message: string }> | NextResponse<{ error: string }>> {
+export async function POST(): Promise<
+  NextResponse<{ message: string }> | NextResponse<{ error: string }>
+> {
   try {
     // const schema = z.object({
     //   name: z.string(),

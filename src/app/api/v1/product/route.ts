@@ -17,7 +17,7 @@ interface PaginatedProductsResponse {
   totalPages: number
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     const { searchParams } = new URL(req.url)
 

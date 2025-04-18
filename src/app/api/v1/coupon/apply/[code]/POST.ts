@@ -1,6 +1,6 @@
 // src/app/api/v1/coupon/apply/[code]/POST.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { applyCoupon } from'@/app/api/v1/services/applyCoupon'
+import { applyCoupon } from '@/app/api/v1/services/applyCoupon'
 export async function POST(req: NextRequest, { params }: { params: { code: string } }) {
   const { code } = params
 
