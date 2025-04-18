@@ -7,7 +7,7 @@ import { prisma } from '@/lib/prisma'
  *   get:
  *     description: GET handler
  */
-export async function GET(req: NextRequest) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     return NextResponse.json({ message: 'GET all cart items' })
   } catch (err) {

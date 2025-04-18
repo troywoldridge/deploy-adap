@@ -2,10 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCategoryById } from '@/app/api/v1/services/getCategory'
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params
 
   try {

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
  *   get:
  *     description: GET wishlist items
  */
-export async function GET(req: NextRequest) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     return NextResponse.json({ message: 'GET all cart items' })
   } catch (err) {

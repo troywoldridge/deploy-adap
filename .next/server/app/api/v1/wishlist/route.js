@@ -1,1 +1,107 @@
-(()=>{var e={};e.id=7185,e.ids=[7185],e.modules={3295:e=>{"use strict";e.exports=require("next/dist/server/app-render/after-task-async-storage.external.js")},10822:()=>{},10846:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},19070:()=>{},29294:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-async-storage.external.js")},44870:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},63033:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-unit-async-storage.external.js")},73188:(e,r,t)=>{"use strict";t.r(r),t.d(r,{patchFetch:()=>h,routeModule:()=>l,serverHooks:()=>m,workAsyncStorage:()=>x,workUnitAsyncStorage:()=>v});var s={};t.r(s),t.d(s,{DELETE:()=>d,GET:()=>u,POST:()=>p,PUT:()=>c});var n=t(74098),o=t(12875),a=t(71978),i=t(17811);async function u(e){try{return i.NextResponse.json({message:"GET all cart items"})}catch(e){return console.error(e),i.NextResponse.json({error:"Internal Server Error"},{status:500})}}async function p(e){try{return await e.json(),i.NextResponse.json({message:"Item added to wishlist"})}catch(e){return console.error(e),i.NextResponse.json({error:"Internal Server Error"},{status:500})}}async function c(e){try{return await e.json(),i.NextResponse.json({message:"Wishlist item updated"})}catch(e){return console.error(e),i.NextResponse.json({error:"Internal Server Error"},{status:500})}}async function d(e){try{return await e.json(),i.NextResponse.json({message:"Item removed from wishlist"})}catch(e){return console.error(e),i.NextResponse.json({error:"Internal Server Error"},{status:500})}}let l=new n.AppRouteRouteModule({definition:{kind:o.RouteKind.APP_ROUTE,page:"/api/v1/wishlist/route",pathname:"/api/v1/wishlist",filename:"route",bundlePath:"app/api/v1/wishlist/route"},resolvedPagePath:"/var/www/deploy-adap/src/app/api/v1/wishlist/route.ts",nextConfigOutput:"standalone",userland:s}),{workAsyncStorage:x,workUnitAsyncStorage:v,serverHooks:m}=l;function h(){return(0,a.patchFetch)({workAsyncStorage:x,workUnitAsyncStorage:v})}}};var r=require("../../../../webpack-runtime.js");r.C(e);var t=e=>r(r.s=e),s=r.X(0,[7920,9748],()=>t(73188));module.exports=s})();
+;(() => {
+  var e = {}
+  ;(e.id = 7185),
+    (e.ids = [7185]),
+    (e.modules = {
+      3295: (e) => {
+        'use strict'
+        e.exports = require('next/dist/server/app-render/after-task-async-storage.external.js')
+      },
+      10822: () => {},
+      10846: (e) => {
+        'use strict'
+        e.exports = require('next/dist/compiled/next-server/app-page.runtime.prod.js')
+      },
+      19070: () => {},
+      29294: (e) => {
+        'use strict'
+        e.exports = require('next/dist/server/app-render/work-async-storage.external.js')
+      },
+      44870: (e) => {
+        'use strict'
+        e.exports = require('next/dist/compiled/next-server/app-route.runtime.prod.js')
+      },
+      63033: (e) => {
+        'use strict'
+        e.exports = require('next/dist/server/app-render/work-unit-async-storage.external.js')
+      },
+      73188: (e, r, t) => {
+        'use strict'
+        t.r(r),
+          t.d(r, {
+            patchFetch: () => h,
+            routeModule: () => l,
+            serverHooks: () => m,
+            workAsyncStorage: () => x,
+            workUnitAsyncStorage: () => v,
+          })
+        var s = {}
+        t.r(s), t.d(s, { DELETE: () => d, GET: () => u, POST: () => p, PUT: () => c })
+        var n = t(74098),
+          o = t(12875),
+          a = t(71978),
+          i = t(17811)
+        async function u(e) {
+          try {
+            return i.NextResponse.json({ message: 'GET all cart items' })
+          } catch (e) {
+            return (
+              console.error(e),
+              i.NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+            )
+          }
+        }
+        async function p(e) {
+          try {
+            return await e.json(), i.NextResponse.json({ message: 'Item added to wishlist' })
+          } catch (e) {
+            return (
+              console.error(e),
+              i.NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+            )
+          }
+        }
+        async function c(e) {
+          try {
+            return await e.json(), i.NextResponse.json({ message: 'Wishlist item updated' })
+          } catch (e) {
+            return (
+              console.error(e),
+              i.NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+            )
+          }
+        }
+        async function d(e) {
+          try {
+            return await e.json(), i.NextResponse.json({ message: 'Item removed from wishlist' })
+          } catch (e) {
+            return (
+              console.error(e),
+              i.NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+            )
+          }
+        }
+        let l = new n.AppRouteRouteModule({
+            definition: {
+              kind: o.RouteKind.APP_ROUTE,
+              page: '/api/v1/wishlist/route',
+              pathname: '/api/v1/wishlist',
+              filename: 'route',
+              bundlePath: 'app/api/v1/wishlist/route',
+            },
+            resolvedPagePath: '/var/www/deploy-adap/src/app/api/v1/wishlist/route.ts',
+            nextConfigOutput: 'standalone',
+            userland: s,
+          }),
+          { workAsyncStorage: x, workUnitAsyncStorage: v, serverHooks: m } = l
+        function h() {
+          return (0, a.patchFetch)({ workAsyncStorage: x, workUnitAsyncStorage: v })
+        }
+      },
+    })
+  var r = require('../../../../webpack-runtime.js')
+  r.C(e)
+  var t = (e) => r((r.s = e)),
+    s = r.X(0, [7920, 9748], () => t(73188))
+  module.exports = s
+})()
