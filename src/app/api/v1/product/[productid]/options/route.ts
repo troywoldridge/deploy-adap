@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
+import type { RouteHandlerContext } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  _req: NextRequest,
+  context: RouteHandlerContext<{ id: string }>
+) {
+  const { id } = context.params
+
   try {
-    return NextResponse.json({ message: 'GET OK' })
+    return NextResponse.json({ message: `GET category ${id}` })
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

@@ -1,75 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// GET handler: Fetch all active coupons
-
-// POST handler: Create a new coupon
-
 /**
  * @swagger
  * /api/endpoint:
  *   get:
  *     description: GET handler
  */
-
-/**
- * @swagger
- * /api/endpoint:
- *   post:
- *     description: POST handler
- */
-
-/**
- * @swagger
- * /api/endpoint:
- *   put:
- *     description: PUT handler
- */
-
-/**
- * @swagger
- * /api/endpoint:
- *   delete:
- *     description: DELETE handler
- */
-
-/**
- * @swagger
- * /api/endpoint:
- *   get:
- *     description: GET handler
- */
-
-/**
- * @swagger
- * /api/endpoint:
- *   post:
- *     description: POST handler
- */
-
-/**
- * @swagger
- * /api/endpoint:
- *   put:
- *     description: PUT handler
- */
-
-/**
- * @swagger
- * /api/endpoint:
- *   delete:
- *     description: DELETE handler
- */
-
-/**
- * @swagger
- * /api/endpoint:
- *   get:
- *     description: GET handler
- */
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest) {
   try {
-    return NextResponse.json({ message: 'GET OK' })
+    return NextResponse.json({ message: 'GET all cart items' })
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

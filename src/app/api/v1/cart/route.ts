@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest) {
   try {
     return NextResponse.json({ message: 'GET all cart items' })
   } catch (err) {
@@ -9,6 +9,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
+
 
 /**
  * @swagger

@@ -1,7 +1,0 @@
-{
-  "headers": {
-    "x-nextjs-stale-time": "4294967294",
-    "x-nextjs-prerender": "1",
-    "x-next-cache-tags": "_N_T_/layout,_N_T_/print-products/layout,_N_T_/print-products/bookmarks/layout,_N_T_/print-products/bookmarks/standard/layout,_N_T_/print-products/bookmarks/standard/lamination/layout,_N_T_/print-products/bookmarks/standard/lamination/gloss/layout,_N_T_/print-products/bookmarks/standard/lamination/gloss/page,_N_T_/print-products/bookmarks/standard/lamination/gloss"
-  }
-}

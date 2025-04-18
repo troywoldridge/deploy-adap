@@ -41,7 +41,7 @@
   "/business-cards/standard/16pt-aq/page": "app/business-cards/standard/16pt-aq/page.js",
   "/business-cards/standard/16pt-matte/page": "app/business-cards/standard/16pt-matte/page.js",
   "/business-cards/standard/16pt-uv/page": "app/business-cards/standard/16pt-uv/page.js",
-  "/business-cards/standard/18pt-gloss-lam/page": "app/business-cards/standard/18pt-gloss-lam/page.js",
+  "/business-cards/standard/page": "app/business-cards/standard/page.js",
   "/checkout/page": "app/checkout/page.js",
   "/labels-and-packaging/page": "app/labels-and-packaging/page.js",
   "/large-format/a-frame-stands/page": "app/large-format/a-frame-stands/page.js",
@@ -169,7 +169,7 @@
   "/stationary/note-pads/50-page/page": "app/stationary/note-pads/50-page/page.js",
   "/stationary/note-pads/page": "app/stationary/note-pads/page.js",
   "/stationary/page": "app/stationary/page.js",
+  "/business-cards/standard/18pt-gloss-lam/page": "app/business-cards/standard/18pt-gloss-lam/page.js",
   "/business-cards/standard/18pt-writable/page": "app/business-cards/standard/18pt-writable/page.js",
-  "/business-cards/standard/linen/page": "app/business-cards/standard/linen/page.js",
-  "/business-cards/standard/page": "app/business-cards/standard/page.js"
+  "/business-cards/standard/linen/page": "app/business-cards/standard/linen/page.js"
 }

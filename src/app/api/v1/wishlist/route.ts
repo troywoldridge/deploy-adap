@@ -6,10 +6,9 @@ import { NextRequest, NextResponse } from 'next/server'
  *   get:
  *     description: GET wishlist items
  */
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest) {
   try {
-    // Fetch wishlist items from the database or a mock for now
-    return NextResponse.json({ message: 'Wishlist items fetched' })
+    return NextResponse.json({ message: 'GET all cart items' })
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

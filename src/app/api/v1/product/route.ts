@@ -1,3 +1,4 @@
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 
@@ -45,44 +46,37 @@ interface PaginatedProductsResponse {
   totalPages: number
 }
 
-// Define the GET method for this route
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
-    const page = searchParams.get('page') || '1'
-    const limit = searchParams.get('limit') || '10'
+
+    const page = parseInt(searchParams.get('page') || '1', 10)
+    const limit = parseInt(searchParams.get('limit') || '10', 10)
     const search = searchParams.get('search') || ''
 
-    // Ensure page and limit are valid integers
-    const pageInt = parseInt(page, 10)
-    const limitInt = parseInt(limit, 10)
-
-    if (isNaN(pageInt) || pageInt < 1) {
-      return new Response(JSON.stringify({ message: 'Invalid page number' }), { status: 400 })
+    if (isNaN(page) || page < 1) {
+      return NextResponse.json({ message: 'Invalid page number' }, { status: 400 })
     }
 
-    if (isNaN(limitInt) || limitInt < 1) {
-      return new Response(JSON.stringify({ message: 'Invalid limit value' }), { status: 400 })
+    if (isNaN(limit) || limit < 1) {
+      return NextResponse.json({ message: 'Invalid limit value' }, { status: 400 })
     }
 
-    const skip = (pageInt - 1) * limitInt
-    const take = limitInt
+    const skip = (page - 1) * limit
 
-    // Build the where condition for search
     const where: Prisma.ProductWhereInput = search
       ? {
-          OR: [{ name: { contains: search } }, { description: { contains: search } }],
+          OR: [
+            { name: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } },
+          ],
         }
       : {}
 
-    // Query the products from Prisma
-    const products = await prisma.product.findMany({
-      where,
-      skip,
-      take,
-    })
-
-    const totalProducts = await prisma.product.count({ where })
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({ where, skip, take: limit }),
+      prisma.product.count({ where }),
+    ])
 
     const response: PaginatedProductsResponse = {
       products: products.map((product) => ({
@@ -90,22 +84,22 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         createdAt: product.createdAt.toISOString(),
         updatedAt: product.updatedAt.toISOString(),
       })),
-      total: totalProducts,
-      page: pageInt,
-      totalPages: Math.ceil(totalProducts / limitInt),
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
     }
 
-    return new Response(JSON.stringify(response), { status: 200 })
+    return NextResponse.json(response)
   } catch (error) {
     console.error('Error fetching products:', error)
 
-    return new Response(
-      JSON.stringify({
+    return NextResponse.json(
+      {
         message:
           process.env.NODE_ENV === 'production'
             ? 'Internal Server Error'
             : (error as Error).message,
-      }),
+      },
       { status: 500 }
     )
   }

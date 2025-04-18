@@ -328,21 +328,21 @@
       "static/chunks/4073-f375293faff27c84.js",
       "static/chunks/app/business-cards/standard/16pt-uv/page-f7b794d2ee83147d.js"
     ],
-    "/business-cards/standard/18pt-gloss-lam/page": [
+    "/business-cards/standard/page": [
       "static/chunks/webpack-0a6d8112dbefde85.js",
       "static/chunks/c19b286a-1fab63eccd5649d2.js",
       "static/chunks/6605-96c33db654895145.js",
       "static/chunks/main-app-d036aefc3a7f734a.js",
       "static/chunks/9460-6b3e562bc2801657.js",
-      "static/chunks/4073-f375293faff27c84.js",
-      "static/chunks/app/business-cards/standard/18pt-gloss-lam/page-b1c568d16a628569.js"
+      "static/chunks/83-3ce6ddaa66d9c343.js",
+      "static/chunks/app/business-cards/standard/page-c39c6a9e7686e201.js"
     ],
     "/checkout/page": [
       "static/chunks/webpack-0a6d8112dbefde85.js",
       "static/chunks/c19b286a-1fab63eccd5649d2.js",
       "static/chunks/6605-96c33db654895145.js",
       "static/chunks/main-app-d036aefc3a7f734a.js",
-      "static/chunks/987-b76151db08b938a1.js",
+      "static/chunks/987-e2549a811ef8237a.js",
       "static/chunks/app/checkout/page-f92360dfe44f6001.js"
     ],
     "/labels-and-packaging/page": [
@@ -1475,6 +1475,15 @@
       "static/chunks/83-3ce6ddaa66d9c343.js",
       "static/chunks/app/stationary/page-a9bf691b2bbc4446.js"
     ],
+    "/business-cards/standard/18pt-gloss-lam/page": [
+      "static/chunks/webpack-0a6d8112dbefde85.js",
+      "static/chunks/c19b286a-1fab63eccd5649d2.js",
+      "static/chunks/6605-96c33db654895145.js",
+      "static/chunks/main-app-d036aefc3a7f734a.js",
+      "static/chunks/9460-6b3e562bc2801657.js",
+      "static/chunks/4073-f375293faff27c84.js",
+      "static/chunks/app/business-cards/standard/18pt-gloss-lam/page-b1c568d16a628569.js"
+    ],
     "/business-cards/standard/18pt-writable/page": [
       "static/chunks/webpack-0a6d8112dbefde85.js",
       "static/chunks/c19b286a-1fab63eccd5649d2.js",
@@ -1492,15 +1501,6 @@
       "static/chunks/9460-6b3e562bc2801657.js",
       "static/chunks/4073-f375293faff27c84.js",
       "static/chunks/app/business-cards/standard/linen/page-d6362e7c76f9fdae.js"
-    ],
-    "/business-cards/standard/page": [
-      "static/chunks/webpack-0a6d8112dbefde85.js",
-      "static/chunks/c19b286a-1fab63eccd5649d2.js",
-      "static/chunks/6605-96c33db654895145.js",
-      "static/chunks/main-app-d036aefc3a7f734a.js",
-      "static/chunks/9460-6b3e562bc2801657.js",
-      "static/chunks/83-3ce6ddaa66d9c343.js",
-      "static/chunks/app/business-cards/standard/page-c39c6a9e7686e201.js"
     ]
   }
 }
