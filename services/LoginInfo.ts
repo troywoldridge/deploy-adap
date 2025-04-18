@@ -1,7 +1,7 @@
 export class LoginInfo {
-    redirectUri: string;
+  redirectUri: string
 
-    constructor(redirectUri: string) {
-        this.redirectUri = redirectUri;
-    }
+  constructor(redirectUri: string) {
+    this.redirectUri = redirectUri
+  }
 }

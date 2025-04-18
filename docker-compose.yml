@@ -1,17 +1,28 @@
-version: "3.8"
+version: '3.8'
 
 services:
   frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: adapnow-frontend
-    working_dir: /app
-    entrypoint: ["/bin/sh", "./entrypoint.sh"]
+      args:
+        GITHUB_ID: your_github_id
+        GITHUB_SECRET: your_github_secret
+        NEXTAUTH_SECRET: your_nextauth_secret
+        GOOGLE_CLIENT_ID: your_google_client_id
+        GOOGLE_CLIENT_SECRET: your_google_client_secret
+        UPS_CLIENT_ID: your_ups_id
+        UPS_CLIENT_SECRET: your_ups_secret
+        FEDEX_API_KEY: your_fedex_key
+        SHIPPO_API_KEY: your_shippo_key
+        DB_USERNAME: postgres
+        DB_PASSWORD: password
+        DB_DATABASE: app_db
+    environment:
+      NODE_ENV: production
     secrets:
-      - db_password
-      - db_username
-      - db_database
+      - github_id
+      - github_secret
       - nextauth_secret
       - client_id
       - client_secret
@@ -19,46 +30,22 @@ services:
       - ups_client_secret
       - fedex_api_key
       - shippo_api_key
-      - github_id
-      - github_secret
-    environment:
-      - CI=true
-      - PNPM_SKIP_VERIFY_STORE_INTEGRITY=true
-      - PNPM_ALLOW_BUILTIN_SCRIPTS=true
-      - NODE_ENV=production
-      - DB_HOST=96.29.236.243
-      - DB_PASSWORD_FILE=/run/secrets/db_password
-      - DB_USERNAME_FILE=/run/secrets/db_username
-      - DB_DATABASE_FILE=/run/secrets/db_database
-      - NEXTAUTH_SECRET_FILE=/run/secrets/nextauth_secret
-      - CLIENT_ID_FILE=/run/secrets/client_id
-      - CLIENT_SECRET_FILE=/run/secrets/client_secret
-      - UPS_CLIENT_ID_FILE=/run/secrets/ups_client_id
-      - UPS_CLIENT_SECRET_FILE=/run/secrets/ups_client_secret
-      - FEDEX_API_KEY_FILE=/run/secrets/fedex_api_key
-      - SHIPPO_API_KEY_FILE=/run/secrets/shippo_api_key
-      - GITHUB_ID_FILE=/run/secrets/github_id
-      - GITHUB_SECRET_FILE=/run/secrets/github_secret
-    restart: always
-    expose:
-      - "3000"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://adapnow-frontend:3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      - db_username
+      - db_password
+      - db_database
 
   caddy:
     image: caddy:latest
     container_name: adapnow-caddy
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
+      - ./public/uploads:/app/public/uploads
     depends_on:
       - frontend
     environment:
@@ -67,29 +54,29 @@ services:
 volumes:
   caddy_data:
   caddy_config:
-  - ./public/uploads:/app/public/uploads
+
 secrets:
-  db_password:
-    file: ../secrets/db_password.txt
-  db_username:
-    file: ../secrets/db_username.txt
-  db_database:
-    file: ../secrets/db_database.txt
-  nextauth_secret:
-    file: ../secrets/nextauth_secret.txt
-  client_id:
-    file: ../secrets/client_id.txt
-  client_secret:
-    file: ../secrets/client_secret.txt
-  ups_client_id:
-    file: ../secrets/ups_client_id.txt
-  ups_client_secret:
-    file: ../secrets/ups_client_secret.txt
-  fedex_api_key:
-    file: ../secrets/fedex_api_key.txt
-  shippo_api_key:
-    file: ../secrets/shippo_api_key.txt
   github_id:
-    file: ../secrets/github_id.txt
+    file: ./secrets/github_id.txt
   github_secret:
-    file: ../secrets/github_secret.txt
+    file: ./secrets/github_secret.txt
+  nextauth_secret:
+    file: ./secrets/nextauth_secret.txt
+  client_id:
+    file: ./secrets/client_id.txt
+  client_secret:
+    file: ./secrets/client_secret.txt
+  ups_client_id:
+    file: ./secrets/ups_client_id.txt
+  ups_client_secret:
+    file: ./secrets/ups_client_secret.txt
+  fedex_api_key:
+    file: ./secrets/fedex_api_key.txt
+  shippo_api_key:
+    file: ./secrets/shippo_api_key.txt
+  db_username:
+    file: ./secrets/db_username.txt
+  db_password:
+    file: ./secrets/db_password.txt
+  db_database:
+    file: ./secrets/db_database.txt

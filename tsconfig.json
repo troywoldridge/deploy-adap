@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,42 +14,26 @@
     "jsx": "preserve",
     "incremental": true,
     "outDir": "./dist",
-    "rootDir": ".", // Points to the src/ directory
-    "baseUrl": ".", // This is now the src/ directory
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "baseUrl": "src",  // This should work assuming the source code is in the src folder
+    "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": [
-        "*"
-      ],
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/styles/*": [
-        "styles/*"
-      ],
-      "@/lib/*": [
-        "lib/*"
-      ],
-      "@/types/*": [
-        "types/*"
-      ]
+      "@/components/*": ["components/*"],
+      "@/styles/*": ["styles/*"],
+      "@/lib/*": ["lib/*"],
+      "@/types/*": ["types/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": [
-    "**/*",
-    "../.next/types/**/*.ts",
-    "../next-env.d.ts",
-    "scripts/processOptions.mjs",
-    "services/LoginInfo.ts",
-    ".next/types/**/*.ts"
+    "src/**/*",
+    ".next/types/**/*.ts",
+    "next-env.d.ts"
   ],
   "exclude": [
-    "../node_modules",
-    "../next.config.ts",
-    "../tailwind.config.ts"
+    "node_modules",
+    "dist",
+    "next.config.ts",
+    "tailwind.config.ts"
   ]
 }

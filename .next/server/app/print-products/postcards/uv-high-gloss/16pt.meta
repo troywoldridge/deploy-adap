@@ -1,0 +1,7 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "4294967294",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/print-products/layout,_N_T_/print-products/postcards/layout,_N_T_/print-products/postcards/uv-high-gloss/layout,_N_T_/print-products/postcards/uv-high-gloss/16pt/layout,_N_T_/print-products/postcards/uv-high-gloss/16pt/page,_N_T_/print-products/postcards/uv-high-gloss/16pt"
+  }
+}

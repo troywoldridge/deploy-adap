@@ -109,12 +109,15 @@ model ProductOptionDetail {
 }
 
 model Image {
-  id        Int     @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
+  url     String
+  product Product @relation(fields: [productId], references: [id])
+
   productId Int
-  url       String
-  product   Product @relation(fields: [productId], references: [id])
-  productId Int
+
+  @@map("images") // Optional: map to a specific table name in the database
 }
+
 
 model OrderItem {
   id        Int     @id @default(autoincrement())

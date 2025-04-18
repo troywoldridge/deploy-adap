@@ -1,8 +1,8 @@
 // File: /var/www/deploy-adap/src/app/api/v1/user/route.ts
-import * as entry from '../../../../../../app/api/v1/user/route.js'
+import * as entry from '../../../../../../src/app/api/v1/user/route.js'
 import type { NextRequest } from 'next/server.js'
 
-type TEntry = typeof import('../../../../../../app/api/v1/user/route.js')
+type TEntry = typeof import('../../../../../../src/app/api/v1/user/route.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }
